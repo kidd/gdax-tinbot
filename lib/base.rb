@@ -16,6 +16,7 @@ module Trader
 
     def initialize(options = {})
       @product_id = options[:product_id] || DEFAULT_PRODUCT_ID
+      @options = options
       @rest_api = Client.client(product_id: @product_id)
     end
 
@@ -32,11 +33,11 @@ module Trader
     end
 
     def min_amount
-      product.base_min_size.to_f
+      @options[:amount] || product.base_min_size.to_f
     end
 
     def round_to
-      @product["quote_increment"].split(".")[-1].length
+      product["quote_increment"].split(".")[-1].length
     end
 
     def run
