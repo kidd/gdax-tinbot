@@ -7,8 +7,6 @@ TO = "EUR"
 
 table = TTY::Table.new header: ['CURRENCY', "AMOUNT", "EUROS"]
 sum = 0
-table << [nil, nil, "CASH"]
-
 rest_api.accounts.each do |account|
   currency = account.currency
   balance = account.balance.to_f
@@ -21,11 +19,12 @@ rest_api.accounts.each do |account|
     output << "%.2f" % br
 		sum = sum + br
 	else
+    sum = sum + balance
 		output << ""
   end
 
 	table << output
 end
 
-table << [nil, "SUM", "%.2f" % sum]
+table << [nil, "TOTAL", "%.2f" % sum]
 puts table.render(:basic, alignment: :right)
