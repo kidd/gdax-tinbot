@@ -12,6 +12,7 @@ rest_api.accounts.each do |account|
   balance = account.balance.to_f
   output = [currency, balance]
 
+  begin
   if currency != TO
 		product_id = "#{currency}-EUR"
     ratio = rest_api.last_trade(product_id: product_id).price.to_f
@@ -24,6 +25,8 @@ rest_api.accounts.each do |account|
   end
 
 	table << output
+  rescue Coinbase::Exchange::NotFoundError
+  end
 end
 
 table << [nil, "TOTAL", "%.2f" % sum]
